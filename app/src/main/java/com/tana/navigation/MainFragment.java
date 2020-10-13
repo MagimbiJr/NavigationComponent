@@ -2,22 +2,29 @@ package com.tana.navigation;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-public class MainFragment extends Fragment {
-    View mView;
+import android.widget.Button;
 
-    public MainFragment() {
-        // Required empty public constructor
-    }
+public class MainFragment extends Fragment implements View.OnClickListener {
+    View mView;
+    NavController mNavController;
+    Button mTransactionBtn;
+    Button mSendBtn;
+    Button mViewBalanceBtn;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mNavController = null;
     }
 
     @Override
@@ -25,5 +32,29 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_main, container, false);
         return mView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mNavController = Navigation.findNavController(view);
+        view.findViewById(R.id.view_transactions_btn).setOnClickListener(this);
+        view.findViewById(R.id.send_money_btn).setOnClickListener(this);
+        view.findViewById(R.id.view_balance_btn).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.view_transactions_btn:
+                    mNavController.navigate(R.id.action_mainFragment_to_transactionFragment);
+                    break;
+                case R.id.send_money_btn:
+                    mNavController.navigate(R.id.action_mainFragment_to_chooseRecipientFragment);
+                    break;
+                case R.id.view_balance_btn:
+                    mNavController.navigate(R.id.action_mainFragment_to_viewBalanceFragment);
+            }
+
     }
 }
